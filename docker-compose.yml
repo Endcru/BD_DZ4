@@ -14,7 +14,7 @@ services:
       REPMGR_NODE_NAME: node-1
       REPMGR_NODE_NETWORK_NAME: library-master
     ports:
-      - "5434:5434"
+      - "5454:5432"
     volumes:
       - ./sql:/docker-entrypoint-initdb.d/
       - library_master_data:/bitnami/postgresql
@@ -32,7 +32,7 @@ services:
       REPMGR_NODE_NAME: node-2
       REPMGR_NODE_NETWORK_NAME: library-slave
     ports:
-      - "5435:5434"
+      - "5455:5432"
     depends_on:
       - library-master
     volumes:
@@ -48,10 +48,10 @@ services:
       REPMGR_PASSWORD: repmgrpassword
       REPMGR_PRIMARY_HOST: hospital-master
       REPMGR_PARTNER_NODES: hospital-master,hospital-slave
-      REPMGR_NODE_NAME: node-1
+      REPMGR_NODE_NAME: node-3
       REPMGR_NODE_NETWORK_NAME: hospital-master
     ports:
-      - "5436:5436"
+      - "5456:5432"
     volumes:
       - ./sql:/docker-entrypoint-initdb.d/
       - hospital_master_data:/bitnami/postgresql
@@ -66,10 +66,10 @@ services:
       REPMGR_PASSWORD: repmgrpassword
       REPMGR_PRIMARY_HOST: hospital-master
       REPMGR_PARTNER_NODES: hospital-master,hospital-slave
-      REPMGR_NODE_NAME: node-2
+      REPMGR_NODE_NAME: node-4
       REPMGR_NODE_NETWORK_NAME: hospital-slave
     ports:
-      - "5437:5436"
+      - "5457:5432"
     depends_on:
       - hospital-master
     volumes:
@@ -85,10 +85,10 @@ services:
       REPMGR_PASSWORD: repmgrpassword
       REPMGR_PRIMARY_HOST: train-master
       REPMGR_PARTNER_NODES: train-master,train-slave
-      REPMGR_NODE_NAME: node-1
+      REPMGR_NODE_NAME: node-5
       REPMGR_NODE_NETWORK_NAME: train-master
     ports:
-      - "5438:5438"
+      - "5458:5432"
     volumes:
       - ./sql:/docker-entrypoint-initdb.d/
       - train_master_data:/bitnami/postgresql
@@ -103,10 +103,10 @@ services:
       REPMGR_PASSWORD: repmgrpassword
       REPMGR_PRIMARY_HOST: train-master
       REPMGR_PARTNER_NODES: train-master,train-slave
-      REPMGR_NODE_NAME: node-2
+      REPMGR_NODE_NAME: node-6
       REPMGR_NODE_NETWORK_NAME: train-slave
     ports:
-      - "5439:5438"
+      - "5459:5432"
     depends_on:
       - train-master
     volumes:
