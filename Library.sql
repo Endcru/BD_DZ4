@@ -1,3 +1,7 @@
+CREATE DATABASE library;
+
+\c library;
+
 CREATE TABLE `category` (
   `CategoryName` varchar(255) PRIMARY KEY
 );

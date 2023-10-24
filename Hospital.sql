@@ -1,3 +1,7 @@
+CREATE DATABASE hospital;
+
+\c hospital;
+
 CREATE TABLE `Room` (
   `RoomNr` integer,
   `StatNr` integer,

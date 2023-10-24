@@ -1,3 +1,8 @@
+CREATE DATABASE trains;
+
+\c trains;
+
+
 CREATE TABLE `city` (
   `Name` varchar(255) PRIMARY KEY,
   `Region` varchar(255)

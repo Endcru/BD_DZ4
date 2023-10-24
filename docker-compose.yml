@@ -1,0 +1,128 @@
+version: '14.5'
+
+services:
+  library-master:
+    image: bitnami/postgresql-repmgr:latest
+    environment:
+      POSTGRESQL_POSTGRES_PASSWORD: adminpassword
+      POSTGRESQL_USERNAME: customuser
+      POSTGRESQL_PASSWORD: custompassword
+      POSTGRESQL_DATABASE: customdatabase
+      REPMGR_PASSWORD: repmgrpassword
+      REPMGR_PRIMARY_HOST: library-master
+      REPMGR_PARTNER_NODES: library-master,library-slave
+      REPMGR_NODE_NAME: node-1
+      REPMGR_NODE_NETWORK_NAME: library-master
+    ports:
+      - "5434:5434"
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d/
+      - library_master_data:/bitnami/postgresql
+
+  library-slave:
+    image: bitnami/postgresql-repmgr:latest
+    environment:
+      POSTGRESQL_POSTGRES_PASSWORD: adminpassword
+      POSTGRESQL_USERNAME: customuser
+      POSTGRESQL_PASSWORD: custompassword
+      POSTGRESQL_DATABASE: customdatabase
+      REPMGR_PASSWORD: repmgrpassword
+      REPMGR_PRIMARY_HOST: library-master
+      REPMGR_PARTNER_NODES: library-master,library-slave
+      REPMGR_NODE_NAME: node-2
+      REPMGR_NODE_NETWORK_NAME: library-slave
+    ports:
+      - "5435:5434"
+    depends_on:
+      - library-master
+    volumes:
+      - library_slave_data:/bitnami/postgresql
+
+  hospital-master:
+    image: bitnami/postgresql-repmgr:latest
+    environment:
+      POSTGRESQL_POSTGRES_PASSWORD: adminpassword
+      POSTGRESQL_USERNAME: customuser
+      POSTGRESQL_PASSWORD: custompassword
+      POSTGRESQL_DATABASE: customdatabase
+      REPMGR_PASSWORD: repmgrpassword
+      REPMGR_PRIMARY_HOST: hospital-master
+      REPMGR_PARTNER_NODES: hospital-master,hospital-slave
+      REPMGR_NODE_NAME: node-1
+      REPMGR_NODE_NETWORK_NAME: hospital-master
+    ports:
+      - "5436:5436"
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d/
+      - hospital_master_data:/bitnami/postgresql
+
+  hospital-slave:
+    image: bitnami/postgresql-repmgr:latest
+    environment:
+      POSTGRESQL_POSTGRES_PASSWORD: adminpassword
+      POSTGRESQL_USERNAME: customuser
+      POSTGRESQL_PASSWORD: custompassword
+      POSTGRESQL_DATABASE: customdatabase
+      REPMGR_PASSWORD: repmgrpassword
+      REPMGR_PRIMARY_HOST: hospital-master
+      REPMGR_PARTNER_NODES: hospital-master,hospital-slave
+      REPMGR_NODE_NAME: node-2
+      REPMGR_NODE_NETWORK_NAME: hospital-slave
+    ports:
+      - "5437:5436"
+    depends_on:
+      - hospital-master
+    volumes:
+      - hospital_slave_data:/bitnami/postgresql
+
+  train-master:
+    image: bitnami/postgresql-repmgr:latest
+    environment:
+      POSTGRESQL_POSTGRES_PASSWORD: adminpassword
+      POSTGRESQL_USERNAME: customuser
+      POSTGRESQL_PASSWORD: custompassword
+      POSTGRESQL_DATABASE: customdatabase
+      REPMGR_PASSWORD: repmgrpassword
+      REPMGR_PRIMARY_HOST: train-master
+      REPMGR_PARTNER_NODES: train-master,train-slave
+      REPMGR_NODE_NAME: node-1
+      REPMGR_NODE_NETWORK_NAME: train-master
+    ports:
+      - "5438:5438"
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d/
+      - train_master_data:/bitnami/postgresql
+
+  train-slave:
+    image: bitnami/postgresql-repmgr:latest
+    environment:
+      POSTGRESQL_POSTGRES_PASSWORD: adminpassword
+      POSTGRESQL_USERNAME: customuser
+      POSTGRESQL_PASSWORD: custompassword
+      POSTGRESQL_DATABASE: customdatabase
+      REPMGR_PASSWORD: repmgrpassword
+      REPMGR_PRIMARY_HOST: train-master
+      REPMGR_PARTNER_NODES: train-master,train-slave
+      REPMGR_NODE_NAME: node-2
+      REPMGR_NODE_NETWORK_NAME: train-slave
+    ports:
+      - "5439:5438"
+    depends_on:
+      - train-master
+    volumes:
+      - train_slave_data:/bitnami/postgresql
+
+volumes:
+  hospital_master_data:
+    driver: local
+  hospital_slave_data:
+    driver: local
+  library_master_data:
+    driver: local
+  library_slave_data:
+    driver: local
+  train_master_data:
+    driver: local
+  train_slave_data:
+    driver: local
+
